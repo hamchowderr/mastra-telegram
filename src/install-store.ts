@@ -1,18 +1,18 @@
-import type { ChannelInstallationInfo } from '@mastra/core/channels'
-import type { ChannelInstallation, ChannelsStorage } from '@mastra/core/storage'
-import type { BotCommand, TelegramInstallation } from './types'
-import { decrypt, encrypt } from './crypto'
+import type { ChannelInstallationInfo } from '@mastra/core/channels';
+import type { ChannelInstallation, ChannelsStorage } from '@mastra/core/storage';
+import type { BotCommand, TelegramInstallation } from './types';
+import { decrypt, encrypt } from './crypto';
 
 /** Platform identifier used for every stored record and route. */
-export const PLATFORM = 'telegram'
+export const PLATFORM = 'telegram';
 
 /** Per-bot secret fields serialized into a {@link ChannelInstallation.data} blob. */
 interface TelegramInstallationData {
-  botToken?: string
-  secretToken?: string
-  username?: string
-  webhookUrl?: string
-  commands?: BotCommand[]
+  botToken?: string;
+  secretToken?: string;
+  username?: string;
+  webhookUrl?: string;
+  commands?: BotCommand[];
 }
 
 /**
@@ -30,39 +30,39 @@ export class TelegramInstallStore {
 
   /** The active or pending installation for an agent, if any. */
   async getByAgent(agentId: string): Promise<TelegramInstallation | null> {
-    const record = await this.storage.getInstallationByAgent(PLATFORM, agentId)
-    return record ? this.#fromRecord(record) : null
+    const record = await this.storage.getInstallationByAgent(PLATFORM, agentId);
+    return record ? this.#fromRecord(record) : null;
   }
 
   /** Look up an installation by the routing id in its webhook path (M1 dispatch). */
   async getByWebhookId(webhookId: string): Promise<TelegramInstallation | null> {
-    const record = await this.storage.getInstallationByWebhookId(webhookId)
-    return record && record.platform === PLATFORM ? this.#fromRecord(record) : null
+    const record = await this.storage.getInstallationByWebhookId(webhookId);
+    return record && record.platform === PLATFORM ? this.#fromRecord(record) : null;
   }
 
   /** Insert or replace an installation. */
   async save(installation: TelegramInstallation): Promise<void> {
-    await this.storage.saveInstallation(this.#toRecord(installation))
+    await this.storage.saveInstallation(this.#toRecord(installation));
   }
 
   /** All Telegram installations (active and pending). */
   async list(): Promise<TelegramInstallation[]> {
-    const records = await this.storage.listInstallations(PLATFORM)
-    return records.map((r) => this.#fromRecord(r))
+    const records = await this.storage.listInstallations(PLATFORM);
+    return records.map(r => this.#fromRecord(r));
   }
 
   /** Remove an agent's installation, if present. */
   async deleteByAgent(agentId: string): Promise<void> {
-    const record = await this.storage.getInstallationByAgent(PLATFORM, agentId)
-    if (record) await this.storage.deleteInstallation(record.id)
+    const record = await this.storage.getInstallationByAgent(PLATFORM, agentId);
+    if (record) await this.storage.deleteInstallation(record.id);
   }
 
   #enc(value: string | undefined): string | undefined {
-    return value && this.encryptionKey ? encrypt(value, this.encryptionKey) : value
+    return value && this.encryptionKey ? encrypt(value, this.encryptionKey) : value;
   }
 
   #dec(value: string | undefined): string | undefined {
-    return value && this.encryptionKey ? decrypt(value, this.encryptionKey) : value
+    return value && this.encryptionKey ? decrypt(value, this.encryptionKey) : value;
   }
 
   #toRecord(install: TelegramInstallation): ChannelInstallation {
@@ -72,7 +72,7 @@ export class TelegramInstallStore {
       username: install.username,
       webhookUrl: install.webhookUrl,
       commands: install.commands,
-    }
+    };
     return {
       id: install.id,
       platform: PLATFORM,
@@ -82,11 +82,11 @@ export class TelegramInstallStore {
       data: data as Record<string, unknown>,
       createdAt: install.installedAt,
       updatedAt: new Date(),
-    }
+    };
   }
 
   #fromRecord(record: ChannelInstallation): TelegramInstallation {
-    const data = (record.data ?? {}) as TelegramInstallationData
+    const data = (record.data ?? {}) as TelegramInstallationData;
     return {
       id: record.id,
       agentId: record.agentId,
@@ -98,7 +98,7 @@ export class TelegramInstallStore {
       webhookUrl: data.webhookUrl,
       commands: data.commands,
       installedAt: record.createdAt,
-    }
+    };
   }
 }
 
@@ -111,5 +111,5 @@ export function toInstallationInfo(install: TelegramInstallation): ChannelInstal
     status: install.status,
     displayName: install.username,
     installedAt: install.installedAt,
-  }
+  };
 }

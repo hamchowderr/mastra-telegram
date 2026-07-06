@@ -1,7 +1,7 @@
-import { randomBytes } from 'node:crypto'
-import type { TelegramUser } from '@chat-adapter/telegram'
-import { TELEGRAM_API_BASE_URL } from './types'
-import type { BotCommand } from './types'
+import { randomBytes } from 'node:crypto';
+import type { TelegramUser } from '@chat-adapter/telegram';
+import { TELEGRAM_API_BASE_URL } from './types';
+import type { BotCommand } from './types';
 
 /**
  * Minimal Telegram Bot API response envelope. The adapter keeps its own copy
@@ -10,10 +10,10 @@ import type { BotCommand } from './types'
  * @see https://core.telegram.org/bots/api#making-requests
  */
 interface TelegramApiResponse<TResult> {
-  ok: boolean
-  result?: TResult
-  description?: string
-  error_code?: number
+  ok: boolean;
+  result?: TResult;
+  description?: string;
+  error_code?: number;
 }
 
 /**
@@ -30,19 +30,19 @@ async function botApiRequest<TResult>(
   const init: RequestInit | undefined =
     payload === undefined
       ? undefined
-      : { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) }
-  let response: Response
+      : { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) };
+  let response: Response;
   try {
-    response = await fetch(`${apiBaseUrl}/bot${botToken}/${method}`, init)
+    response = await fetch(`${apiBaseUrl}/bot${botToken}/${method}`, init);
   } catch (cause) {
-    throw new Error(`Telegram ${method} request failed`, { cause })
+    throw new Error(`Telegram ${method} request failed`, { cause });
   }
-  const body = (await response.json().catch(() => null)) as TelegramApiResponse<TResult> | null
+  const body = (await response.json().catch(() => null)) as TelegramApiResponse<TResult> | null;
   if (!response.ok || !body?.ok) {
-    const detail = body?.description ?? `HTTP ${response.status}`
-    throw new Error(`Telegram ${method} failed: ${detail}`)
+    const detail = body?.description ?? `HTTP ${response.status}`;
+    throw new Error(`Telegram ${method} failed: ${detail}`);
   }
-  return body.result as TResult
+  return body.result as TResult;
 }
 
 /**
@@ -51,35 +51,31 @@ async function botApiRequest<TResult>(
  *
  * @see https://core.telegram.org/bots/api#getme
  */
-export async function getMe(
-  botToken: string,
-  apiBaseUrl: string = TELEGRAM_API_BASE_URL,
-): Promise<TelegramUser> {
-  let result: TelegramUser
+export async function getMe(botToken: string, apiBaseUrl: string = TELEGRAM_API_BASE_URL): Promise<TelegramUser> {
+  let result: TelegramUser;
   try {
-    result = await botApiRequest<TelegramUser>(botToken, 'getMe', apiBaseUrl)
+    result = await botApiRequest<TelegramUser>(botToken, 'getMe', apiBaseUrl);
   } catch (cause) {
-    throw new Error(
-      `Telegram rejected the bot token: ${cause instanceof Error ? cause.message : String(cause)}`,
-      { cause },
-    )
+    throw new Error(`Telegram rejected the bot token: ${cause instanceof Error ? cause.message : String(cause)}`, {
+      cause,
+    });
   }
   if (!result?.is_bot) {
-    throw new Error('Telegram getMe returned a non-bot user; expected a BotFather token')
+    throw new Error('Telegram getMe returned a non-bot user; expected a BotFather token');
   }
-  return result
+  return result;
 }
 
 /** Options for {@link setWebhook}. */
 export interface SetWebhookOptions {
   /** Public HTTPS URL Telegram will POST updates to. */
-  url: string
+  url: string;
   /** Shared secret echoed back as `X-Telegram-Bot-Api-Secret-Token` on every POST. */
-  secretToken: string
+  secretToken: string;
   /** Update types to receive. Note: `message_reaction` must be listed explicitly. */
-  allowedUpdates?: string[]
+  allowedUpdates?: string[];
   /** Drop the backlog of updates queued while the bot was offline. */
-  dropPendingUpdates?: boolean
+  dropPendingUpdates?: boolean;
 }
 
 /**
@@ -98,7 +94,7 @@ export async function setWebhook(
     secret_token: options.secretToken,
     allowed_updates: options.allowedUpdates,
     drop_pending_updates: options.dropPendingUpdates,
-  })
+  });
 }
 
 /**
@@ -114,17 +110,17 @@ export async function deleteWebhook(
 ): Promise<void> {
   await botApiRequest<boolean>(botToken, 'deleteWebhook', apiBaseUrl, {
     drop_pending_updates: dropPendingUpdates,
-  })
+  });
 }
 
 /** Options for {@link setMyCommands}. */
 export interface SetMyCommandsOptions {
   /** The command list to publish (replaces the existing set for the scope). */
-  commands: BotCommand[]
+  commands: BotCommand[];
   /** Command scope (e.g. `{ type: 'all_private_chats' }`). Omit for the default scope. */
-  scope?: Record<string, unknown>
+  scope?: Record<string, unknown>;
   /** Two-letter language code for a localized command set. */
-  languageCode?: string
+  languageCode?: string;
 }
 
 /**
@@ -141,7 +137,7 @@ export async function setMyCommands(
     commands: options.commands,
     scope: options.scope,
     language_code: options.languageCode,
-  })
+  });
 }
 
 /**
@@ -152,5 +148,5 @@ export async function setMyCommands(
  * @see https://core.telegram.org/bots/api#setwebhook
  */
 export function generateSecretToken(): string {
-  return randomBytes(32).toString('base64url')
+  return randomBytes(32).toString('base64url');
 }

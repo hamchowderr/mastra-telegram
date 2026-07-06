@@ -28,6 +28,7 @@
   "devDependencies": {
     "@mastra/core": "^1.49.0",
     "@types/node": "^22.19.21",
+    "prettier": "^3.9.4",
     "tsup": "^8.5.1",
     "typescript": "^5.8.2",
     "undici": "^6.0.0",
@@ -62,6 +63,8 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest"
   }

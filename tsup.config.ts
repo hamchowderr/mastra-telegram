@@ -1,4 +1,4 @@
-import { defineConfig } from 'tsup'
+import { defineConfig } from 'tsup';
 
 // @chat-adapter/telegram (Vercel Chat SDK) is ESM-only — its package `exports`
 // has no `require`/`default` condition, so a CJS `require()` of it throws
@@ -6,7 +6,7 @@ import { defineConfig } from 'tsup'
 // keep the adapter external in ESM (lean, deduped) but bundle it into the CJS
 // output so `require('@mastra/telegram')` never touches the adapter's ESM-only
 // entry. Only @mastra/core stays external in both.
-const ADAPTER = ['@chat-adapter/telegram', '@chat-adapter/shared', 'chat']
+const ADAPTER = ['@chat-adapter/telegram', '@chat-adapter/shared', 'chat'];
 
 export default defineConfig([
   {
@@ -26,4 +26,4 @@ export default defineConfig([
     external: ['@mastra/core'],
     noExternal: ADAPTER,
   },
-])
+]);
