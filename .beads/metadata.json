@@ -3,5 +3,6 @@
   "backend": "dolt",
   "dolt_mode": "embedded",
   "dolt_database": "mastra_telegram",
-  "project_id": "af460428-0872-49a1-8c7d-b1d8445d008d"
+  "project_id": "af460428-0872-49a1-8c7d-b1d8445d008d",
+  "braynee_seen_bd_version": "1.1.0"
 }
