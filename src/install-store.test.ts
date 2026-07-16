@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { InMemoryChannelsStorage } from '@mastra/core/storage';
-import { PLATFORM, TelegramInstallStore, toInstallationInfo } from '../src/index';
-import type { TelegramInstallation } from '../src/index';
+import { PLATFORM, TelegramInstallStore, toInstallationInfo } from './index';
+import type { TelegramInstallation } from './index';
 
 function makeStore() {
   return new TelegramInstallStore(new InMemoryChannelsStorage());

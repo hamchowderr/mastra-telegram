@@ -10,7 +10,7 @@ import {
   TelegramProvider,
   normalizeCommands,
   resolveTelegramAdapterConfig,
-} from '../src/index';
+} from './index';
 
 const API_ORIGIN = 'https://api.telegram.org';
 const BASE_URL = 'https://bot.example.com';

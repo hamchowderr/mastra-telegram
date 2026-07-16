@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { InMemoryChannelsStorage } from '@mastra/core/storage';
-import { decrypt, encrypt, isEncrypted } from '../src/crypto';
-import { TelegramInstallStore } from '../src/index';
-import type { TelegramInstallation } from '../src/index';
+import { decrypt, encrypt, isEncrypted } from './crypto';
+import { TelegramInstallStore } from './index';
+import type { TelegramInstallation } from './index';
 
 const KEY = 'a-32+char-passphrase-for-testing-only';
 
