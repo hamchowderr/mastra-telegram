@@ -1,0 +1,71 @@
+{
+  "name": "@mastra/telegram",
+  "version": "0.0.0",
+  "description": "Telegram integration for Mastra agents — a ChannelProvider over @chat-adapter/telegram with webhooks, secret verification, commands, and streaming replies",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "dependencies": {
+    "@chat-adapter/telegram": "^4.32.0"
+  },
+  "devDependencies": {
+    "@mastra/core": "^1.49.0",
+    "@types/node": "^22.19.21",
+    "prettier": "^3.9.4",
+    "tsup": "^8.5.1",
+    "typescript": "^5.8.2",
+    "undici": "^6.0.0",
+    "vitest": "^4.1.9"
+  },
+  "peerDependencies": {
+    "@mastra/core": "^1.22.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "mastra",
+    "telegram",
+    "chatbot",
+    "ai",
+    "agent"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mastra-ai/mastra.git",
+    "directory": "channels/telegram"
+  },
+  "homepage": "https://mastra.ai",
+  "bugs": {
+    "url": "https://github.com/mastra-ai/mastra/issues"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  }
+}
